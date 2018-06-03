@@ -1,0 +1,25 @@
+<form action="postavy/obnoveni" method="POST">
+    <select name="postava">
+        <?php
+        if (isset($smazane)) {
+           foreach ($smazane as $smazana) {
+
+              echo '<option value="' . $smazana['guid'] . '">' . $smazana['deleteInfos_Name'] . ' (' . $smazana['race'] . ' ' . $smazana['class'] . ' level ' . $smazana['level'] . ')</option>';
+           }
+        } else {
+           echo '<option>Žádná postava k obnovení</option>';
+        }
+        ?>
+    </select>
+    <?php
+    if (isset($smazane)) {
+       echo '<input type="submit" name="obnovit_postavu" value="Obnovit postavu">';
+       
+    }
+    $token = bin2hex(random_bytes(25));
+    $_SESSION['token'] = $token;
+    
+    ?>
+    <input type="hidden" name="token" value="<?=$token?>">
+</form>
+

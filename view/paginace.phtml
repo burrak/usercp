@@ -1,0 +1,37 @@
+<?php
+        $polomer = 5; // Poloměr oblasti kolem aktuální stránky
+        echo '<nav class="centrovany"><ul class="paginace">';
+        // Šipka vlevo
+        if ($strana > 1)
+                echo '<li><a href="'.$url.'/'.($strana - 1).'">&laquo;</a></li>';
+        else
+                echo '<li class="neaktivni">&laquo;</li>';
+        $left = $strana - $polomer >= 1 ? $strana - $polomer : 1;
+        $right = $strana + $polomer <= $stran ? $strana + $polomer : $stran;
+        // Umístění jedničky
+        if ($left > 1)
+                echo '<li><a href="#1">1</a></li>';
+        // Tečky vlevo
+        if ($left > 2)
+           echo '<li class="neaktivni">&hellip;</li>';
+        // Stránky v radiusu
+        for ($i = $left; $i <= $right; $i++)
+        {
+                if ($i == $strana) // Aktivní stránka
+                        echo '<li class="aktivni">' . $i . '</li>';
+                else
+                        echo '<li><a href="'.$url.'/'. $i . '">' . $i . '</a></li>';
+        }
+        // Tečky vpravo
+        if ($right < $stran - 1)
+                echo '<li class="neaktivni">' . '&hellip;' . '</li>';
+        // Umístění poslední stránky
+        if ($right < $stran)
+                echo '<li><a href="'.$url.'/' . $stran . '">' . $stran . '</a></li>';
+        // Šipka vpravo
+        if ($strana < $stran)
+                echo '<li><a href="' . $url .'/'. ($strana + 1) . '">&raquo;</a></li>';
+        else
+                echo '<li class="neaktivni">&laquo;</li>';
+        echo '</ul></nav>';
+
