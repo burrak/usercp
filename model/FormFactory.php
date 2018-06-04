@@ -39,9 +39,9 @@ class FormFactory {
       $input = '<tr>'.PHP_EOL.'<td>'.PHP_EOL.$params['title'].PHP_EOL.'</td>'.PHP_EOL.'<td>'.PHP_EOL.'<select name="'.$params['name'].'" id="'.$params['name'].'">'.PHP_EOL;
       $this->form .= $input; 
       foreach ($params['options'] as $key => $value) {
-         $this->form .= '<option value="'.$key.'">'.$value.'</option>';         
+         $this->form .= '<option value="'.$key.'">'.$value.'</option>'.PHP_EOL;         
       }
-      $this->form .= '</select></td></tr>';
+      $this->form .= '</select>'.PHP_EOL.'</td>'.PHP_EOL.'</tr>'.PHP_EOL;
    }
    
 
