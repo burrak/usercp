@@ -44,10 +44,19 @@ class PostavyController extends Controller {
             $this->alertView = $character['view_alert'];
          }
          $this->contentView = $character['view_content'];
-      
-         
       } elseif (((isset($params[0])) && ($params[0] == 'obnoveni'))) {
          $smazane = $postavy->returnSmazanePostavy(1, 1);
+         $formSmazane = new FormFactory('obnoveni', 'postavy/obnoveni', 'POST');
+         if (!empty($smazane[0])) {
+            foreach ($smazane[0] as $key => $value) {
+               $smazaneList[$value['guid']] = $value['deleteInfos_Name'] . ' (' . $value['race'] . ' ' . $value['class'] . ' level ' . $value['level'] . ')';
+            }
+            $formSmazane->addSelect(array('title' => 'Postava', 'name' => 'postava', 'options' => $smazaneList));
+            $formSmazane->addSubmit('obnovit_postavu', 'Obnovit postavu');
+         } else {
+            $smazaneList[0] = 'Žádné postavy k obnovení';
+            $formSmazane->addSelect(array('title' => 'Postava', 'name' => 'postava', 'options' => $smazaneList));
+         }
 
          if ((isset($_POST['postava'])) && (isset($_POST['obnovit_postavu'])) && ($_POST['token'] == $_SESSION['token'])) {
             unset($_SESSION['token']);
@@ -58,7 +67,7 @@ class PostavyController extends Controller {
             $this->alertView = $obnovit['view_alert'];
             $this->contentView = $obnovit['view_content'];
             $this->data['alert'] = $obnovit['alert'];
-            $this->data['smazane'] = $obnovit[0];
+            $this->data['formSmazane'] = $formSmazane->renderForm();
          } else {
 
             $this->headerView = $smazane[1]['view_header'];
@@ -67,8 +76,7 @@ class PostavyController extends Controller {
                $this->alertView = $smazane[1]['view_alert'];
             }
             $this->contentView = $smazane[1]['view_content'];
-            $this->data['smazane'] = $smazane[0];
-            
+            $this->data['formSmazane'] = $formSmazane->renderForm();
          }
       }
 

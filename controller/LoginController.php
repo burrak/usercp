@@ -4,7 +4,7 @@ class LoginController extends Controller
   public function proceed($params)
   {
   
-  if(isset($_POST['login_submit']))
+  if((isset($_POST['login_submit'])) && (isset($_POST['login'])) && (isset($_POST['heslo'])))
     { 
       $loginhandler = new LoginHandler($_POST['login'], $_POST['heslo']);
       $overheslo = $loginhandler->checkLogin();
@@ -34,7 +34,13 @@ class LoginController extends Controller
     }
   if(((!isset($_SESSION['id'])) || ($_SESSION['id'] == 0)) && (!isset($_POST['login_sbumit'])) && ((!isset($params[0]))))
     {
-      $this->contentView = 'login';
+     if(!isset($_POST['login'])) $_POST['login'] = '';
+     $loginForm = new FormFactory('login', '/login', 'POST');
+     $loginForm->addText(array('name' => 'login', 'title' => 'Login', 'value' => $_POST['login'], 'required' => 'required'));
+     $loginForm->addPassword(array('name' => 'heslo', 'title' => 'Heslo', 'required' => 'required'));
+     $loginForm->addSubmit('login_submit', 'Login');
+     $this->data['loginForm'] = $loginForm->renderForm();
+     $this->contentView = 'login';
     }
     
    if(isset($params[0]) && ($params[0]=='logout'))

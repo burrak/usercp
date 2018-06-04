@@ -35,6 +35,15 @@ class FormFactory {
       $this->form .= $input;
    }
    
+   public function addSelect($params) {
+      $input = '<tr>'.PHP_EOL.'<td>'.PHP_EOL.$params['title'].PHP_EOL.'</td>'.PHP_EOL.'<td>'.PHP_EOL.'<select name="'.$params['name'].'" id="'.$params['name'].'">'.PHP_EOL;
+      $this->form .= $input; 
+      foreach ($params['options'] as $key => $value) {
+         $this->form .= '<option value="'.$key.'">'.$value.'</option>';         
+      }
+      $this->form .= '</select></td></tr>';
+   }
+   
 
    
    public function renderForm() {
