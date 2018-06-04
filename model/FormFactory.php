@@ -9,7 +9,7 @@ class FormFactory {
       $this->name = $name;
       $this->action = $action;
       $this->method = $method;
-      $form_header = '<form action="'.$this->action.'" method="'.$this->method.'" name="'.$this->name.'">'.PHP_EOL.'<table>'.PHP_EOL.'';
+      $form_header = '<form action="'.$this->action.'" method="'.$this->method.'" name="'.$this->name.'">'.PHP_EOL.'<table class="'.$this->name.'">'.PHP_EOL.'';
       $this->form .= $form_header;
    }
    
