@@ -1,3 +1,3 @@
 <?php
-phpinfo();
+define('BRANCH',	'3.3.5a');
 ?>
