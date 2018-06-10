@@ -46,23 +46,22 @@ class FormHandler {
       }
 
       foreach ($params as $key => $value) {
-         if ((strpos($key, self::TEXT)) !== false) {
+         if ((preg_match('#^'.self::TEXT.'#', $key)) === 1) {
             $newkey = str_replace(self::TEXT, '', $key);
             $data[$newkey] = $value;
-         } elseif ((strpos($key, self::PASSWORD)) !== false) {
+         } elseif ((preg_match('#^'.self::PASSWORD.'#', $key)) === 1) {
             $newkey = str_replace(self::PASSWORD, '', $key);
             $data[$newkey] = $value;
-         } elseif ((strpos($key, self::EMAIL)) !== false) {
+         } elseif ((preg_match('#^'.self::EMAIL.'#', $key)) === 1) {
             $newkey = str_replace(self::EMAIL, '', $key);
             $data[$newkey] = $value;
-         } elseif ((strpos($key, self::SELECT)) !== false) {
+         } elseif ((preg_match('#^'.self::SELECT.'#', $key)) === 1) {
             $newkey = str_replace(self::SELECT, '', $key);
             $data[$newkey] = $value;
-         } else {
-            $data[$key] = $value;
          }
       }
       return $data;
+      
    }
 
 }
