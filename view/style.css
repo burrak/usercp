@@ -42,7 +42,6 @@ table.sluzby td
 */
 
 ul.paginace li {
-    display: inline-block;
     padding: 4px 10px;
     border: 1px solid #DDDDDD;
     margin-left: -1px;
@@ -63,7 +62,7 @@ ul.paginace li.aktivni {
 }
 
 ul.paginace a {
-        text-decoration: none;
+    text-decoration: none;
 }
 
 /*
@@ -71,53 +70,68 @@ ul.paginace a {
 */
 
 .centrovany {
-        text-align: center;
+    text-align: center;
 }
 
-.navigace {
-    z-index: 99;
-    float: left;
+.menu ul{
+    list-style-type:none;
+    padding:0;
+    text-transform: uppercase;
+}
+/* make the top level links horizontal and position relative so that we can position the sub level */
+.menu li{
+    float:left;
+    position:relative;
+    z-index:100;
 }
 
-.navigace a, .navigace a:hover, .navigace a:visited {
-    text-decoration: none;
-    color: #ffffff;
-}
-
-ul.navigace li ul {
-    display: none;
-    list-style: none;
-}
-
-ul.navigace li {
-    list-style: none;
-    height: 35px;
-    width: 150px;
-    background:#02517F;
-    text-align:center;
-    padding-top:12px;
-    border-right:2px solid white;
-    color:#ffffff; 
-    overflow: visible !important;
-}
-
-ul.navigace li:hover {
-    background: #466A7F;
-    text-align:center;
-}
-
-ul.navigace ul {
-    margin-top: 17px;
+/* use the table to position the dropdown list */
+.menu table{
     position: absolute;
-    opacity: 0.95;
-    
+    border-collapse: collapse;
+    z-index: 80;
+    left:-1px;
+    top:25px;
 }
 
-ul.navigace li ul li {
-    margin-left: -40px;
+/* style all the links */
+.menu a, .menu :visited {
+    font-family: calibri;
+    display:block;
+    font-size:18px;
+    width:167px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left:0;
+    padding-right:0;
+    color: #FFFFFF;
+    background: brown;
+    text-decoration:none;
+    margin-right:1px;
+    text-align:center;
+    border-left: 2px solid white;
+}
+/* style the links hover */
+.menu :hover{
+    color:#444;
+    background:#d4d8bd;
 }
 
-ul.navigace li:hover > ul {display:block;}
-ul.navigace li ul li {background: #db8e34;}
-ul.navigace li ul li:hover {background: #466A7F;}
+/* hide the sub level links */
+.menu ul ul {
+    visibility:hidden;
+    position:absolute;
+    width:168px;
+    height:0;
+}
+
+.menu ul ul li {  
+    width:165px;
+}
+
+/* make the sub level visible on hover list or link */
+.menu ul li:hover ul,
+.menu ul a:hover ul{
+    visibility:visible;
+}
 

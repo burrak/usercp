@@ -1,65 +1,62 @@
 <table class="zpravy_vypis">
-    
+
     <tr>
         <td>
-          <b>Jméno</b>
+            <b>Jméno</b>
         </td>
-      
-	<td>
-          <b>Rasa</b>
-	</td>
-	
-	<td>
-          <b>Class</b>
-	</td>
-      
+
+        <td>
+            <b>Rasa</b>
+        </td>
+
+        <td>
+            <b>Class</b>
+        </td>
+
         <td>
             <b>Level</b>
         </td>
-        
+
         <td>
             <b>Zlato</b>
         </td>
-	</tr>
-<?php foreach ($postavy as $postava) : ?>
-	<tr>
-            <td>
-                <a href="/postavy/detail/<?=$postava['guid']?>"><?=$postava['name']?></a>
-            </td>
-      
-            <td>
-		<?=$postava['race']?>
-            </td>
-	
-            <td>
-		<?=$postava['class']?>
-            </td>
-      
-            <td>
-                <?=$postava['level']?>
-            </td>
-            
-            <td>
-                <?php  
-                if($postava['money'] >= 10000)
-                {
-                    $v = substr_replace($postava['money'], ' g ', -4, 0);
-                    echo substr_replace($v, ' s ', -2, 0).' c';                    
-                }
-                
-                if($postava['money'] < 10000 && $postava['money'] >= 100)
-                {
-                    echo substr_replace($postava['money'], ' s ', -2, 0).' c';
-                }
-                
-                if($postava['money'] < 100)
-                {
-                    echo $postava['money'] . ' c';
-                }
-                ?>
-            </td>
-	</tr>
-<?php endforeach ?>
+    </tr>
+    <?php foreach ($postavy as $postava) : ?>
+       <tr>
+           <td>
+               <a href="/postavy/detail/<?= $postava['guid'] ?>"><?= $postava['name'] ?></a>
+           </td>
+
+           <td>
+               <?= $postava['race'] ?>
+           </td>
+
+           <td>
+               <?= $postava['class'] ?>
+           </td>
+
+           <td>
+               <?= $postava['level'] ?>
+           </td>
+
+           <td>
+               <?php
+               if ($postava['money'] >= 10000) {
+                  $v = substr_replace($postava['money'], ' g ', -4, 0);
+                  echo substr_replace($v, ' s ', -2, 0) . ' c';
+               }
+
+               if ($postava['money'] < 10000 && $postava['money'] >= 100) {
+                  echo substr_replace($postava['money'], ' s ', -2, 0) . ' c';
+               }
+
+               if ($postava['money'] < 100) {
+                  echo $postava['money'] . ' c';
+               }
+               ?>
+           </td>
+       </tr>
+            <?php endforeach ?>
 </table>
 
 

@@ -22,16 +22,14 @@ class Db {
       $return = self::$connection->prepare($query);
       $return->execute($params);
       return $return->fetchAll();
-      
    }
 
    public static function queryOne($query, $params = array()) {
       $return = self::$connection->prepare($query);
       $return->execute($params);
       return $return->fetch();
-      
    }
-   
+
    public static function queryInsert($query, $params = array()) {
       $return = self::$connection->prepare($query);
       return $return->execute($params);
@@ -58,7 +56,7 @@ class Db {
          return true;
       } catch (Exception $ex) {
 
-    echo $ex->getMessage();
+         echo $ex->getMessage();
          self::$connection->rollback();
          return false;
       }

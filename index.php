@@ -9,10 +9,11 @@ function autoloadFunkce($class)
 	// Končí název třídy řetězcem "Kontroler" ?
     if (preg_match('/Controller/', $class))
         require("controller/" . $class . ".php");        
-    elseif (!preg_match('/Latte/', $class))
+    else
         require("model/" . $class . ".php");
-}
 
+}
+        
 
 
 // Registrace callbacku (Pod starým PHP 5.2 je nutné nahradit fcí __autoload())
