@@ -1,40 +1,41 @@
-Postava: <?=$name?><br />
-Rasa: <?=$race?><br />
-Class: <?=$class?><br />
+Postava: <?= $name ?><br />
+Rasa: <?= $race ?><br />
+Class: <?= $class ?><br />
 <hr />
 <table class="sluzby">
     <tr>
         <td>
             <strong>Služba</strong>
         </td>
-        
+
         <td>
-           <strong>Cena služby</strong>
+            <strong>Cena služby</strong>
         </td>
-        
+
         <td>
-           <strong>Zakoupení</strong>
+            <strong>Zakoupení</strong>
         </td>
     </tr>
-<?php
-foreach ($sluzby as $key => $sluzba) {
-   $odkaz = str_replace('_', ' ', $sluzba['service']);
-   $odkaz = ucwords($odkaz);
-   $onclick = '\'Opravdu chcete zakoupit '.$odkaz.'? Cena služby je '.$sluzba['price'].' Kreditů.\'';
-   echo ''
-   . '<tr>
+    <?php
+    foreach ($sluzby as $key => $sluzba) {
+       $odkaz = str_replace('_', ' ', $sluzba['service']);
+       $odkaz = ucwords($odkaz);
+       $onclick = '\'Opravdu chcete zakoupit ' . $odkaz . '? Cena služby je ' . $sluzba['price'] . ' Kreditů.\'';
+       echo ''
+       . '<tr>
          <td>
-            '.$odkaz.'
+            ' . $odkaz . '
          </td>
          
          <td>
-            '.$sluzba['price'].' Kreditů
+            ' . $sluzba['price'] . ' Kreditů
          </td>
          
          <td>
-            <a href="/postavy/'.$sluzba['service'].'/'.$guid.'" onclick="return confirm('.$onclick.')"> Zakoupit '.$odkaz.'</a>
+            <a href="/postavy/' . $sluzba['service'] . '/' . $guid . '" onclick="return confirm(' . $onclick . ')"> Zakoupit ' . $odkaz . '</a>
          </td>
       </tr>';
 //           
-} ?>
+    }
+    ?>
 </table>

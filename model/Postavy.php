@@ -12,8 +12,10 @@ class Postavy {
    const AT_LOGIN_CHANGE_RACE = 128;
 
    private $account_id;
+   private $user;
 
    public function __construct($id) {
+      $this->user = new User($_SESSION['id']);
       $this->account_id = $id;
    }
 
@@ -121,7 +123,7 @@ class Postavy {
    private function getJednaPostava($postava_id) {
       return Db::queryOne('SELECT * FROM characters.characters WHERE guid=? LIMIT 1', array($postava_id));
    }
-   
+
    private function getSmazanePostavy($race, $class) {
       $smazane = Db::query('SELECT * FROM characters.characters WHERE deleteInfos_Account=?', array($this->account_id));
       foreach ($smazane as $key => &$char) {
@@ -132,7 +134,7 @@ class Postavy {
             $char['class'] = $this->classHandler($char['class']);
          }
       }
-      return $smazane;      
+      return $smazane;
    }
 
    private function postavaCheck($postava_id, $original_page = 'detail', $je_smazana = 0) {
@@ -179,23 +181,22 @@ class Postavy {
       }
       return $postava;
    }
-   
+
    public function returnSmazanePostavy($race, $class) {
       //var_dump($this->getSmazanePostavy(1, 1));
       return array($this->getSmazanePostavy($race, $class), array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'postavaSmazane'));
-      
    }
-   
+
    public function returnSluzby() {
       return Db::query('SELECT * FROM auth.ucp_prices');
    }
 
    private function priceCheck($service) {
-      $credits = Db::queryOne('SELECT credits FROM auth.account WHERE id=?', array($this->account_id));
+      $credits = $this->user->returnCredits();
       $price = Db::queryOne('SELECT price FROM auth.ucp_prices WHERE service=?', array($service));
 
-      if ($credits['credits'] > $price['price']) {
-         return $credits['credits'] - $price['price'];
+      if ($credits > $price['price']) {
+         return $credits - $price['price'];
       } else {
          return array($this->returnPostava($postava['guid']), array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'postavaDetail', 'view_alert' => 'error', 'alert' => 'Nemáš dostatek kreditů.'));
       }
@@ -334,7 +335,7 @@ class Postavy {
          }
       }
    }
-   
+
    public function apperancechange($postava_id) {
 
       $postava = $this->postavaCheck($postava_id);
@@ -367,23 +368,20 @@ class Postavy {
          }
       }
    }
-   
+
    public function obnovPostavu($postava_id) {
       $postava = $this->postavaCheck($postava_id, 'obnoveni', 1);
-      if(!isset($postava['guid'])) {
+      if (!isset($postava['guid'])) {
          return $postava;
       } else {
          $query = Db::queryUpdate('UPDATE characters.characters SET account=deleteInfos_Account, name=guid, deleteInfos_Account= NULL, deleteDate= NULL, deleteInfos_Name= NULL, at_login=1 WHERE guid=?', array($postava_id));
          if ($query == TRUE) {
-            return array($this->returnSmazanePostavy(1, 1), array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'postavaSmazane', 'view_alert' => 'success', 'alert' => 'Postava '.$postava['deleteInfos_Name'].' byla obnovena.')); 
+            return array($this->returnSmazanePostavy(1, 1), array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'postavaSmazane', 'view_alert' => 'success', 'alert' => 'Postava ' . $postava['deleteInfos_Name'] . ' byla obnovena.'));
          }
          if ($query == FALSE) {
-            return array($this->returnSmazanePostavy(1, 1), array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'postavaSmazane', 'view_alert' => 'error', 'alert' => 'Postavu '.$postava['deleteInfos_Name'].' se nepodařilo obnovit. Zkus to znovu.')); 
+            return array($this->returnSmazanePostavy(1, 1), array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'postavaSmazane', 'view_alert' => 'error', 'alert' => 'Postavu ' . $postava['deleteInfos_Name'] . ' se nepodařilo obnovit. Zkus to znovu.'));
          }
       }
-      
    }
-   
-   
 
 }
