@@ -2,54 +2,53 @@
 
 class FormHandler {
 
-   const TEXT = 'text_';
-   const PASSWORD = 'password_';
-   const EMAIL = 'email_';
-   const SELECT = 'select_';
+   const TEXT = 'text';
+   const PASSWORD = 'password';
+   const EMAIL = 'email';
+   const SELECT = 'select';
 
-   private function sanitize($name, $value) {
-      if (strpos($name, self::TEXT)) {
-         $sanitized = filter_var($value, self::FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+   private function sanitize($name, $value, $type) {
+      if ($type == self::TEXT) {
+         $sanitized = filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
          if ($value !== $sanitized) {
-            return array('view_aler' => 'error', 'alert' => 'Některé z polí obsahuje nepovolené znaky');
+            return array('view_alert' => 'error', 'alert' => 'Některé z polí obsahuje nepovolené znaky');
          }
       }
-      if (strpos($name, self::EMAIL)) {
-         $sanitized = filter_var($value, self::FILTER_SANITIZE_EMAIL);
+      if ($type == self::EMAIL) {
+         $sanitized = filter_var($value, FILTER_SANITIZE_EMAIL);
          if ($value !== $sanitized) {
-            return array('view_aler' => 'error', 'alert' => 'Některé z polí obsahuje nepovolené znaky');
+            return array('view_alert' => 'error', 'alert' => 'Některé z polí obsahuje nepovolené znaky');
          }
       }
    }
 
-   private function validate($name, $value) {
-      if (strpos($name, self::EMAIL)) {
-         $sanitized = filter_var($value, self::FILTER_VALIDATE_EMAIL);
+   private function validate($name, $value, $type) {
+      if ($type == self::EMAIL) {
+         $sanitized = filter_var($value, FILTER_VALIDATE_EMAIL);
          if ($value !== $sanitized) {
-            return array('view_aler' => 'error', 'alert' => 'Špatný formát e-mailu');
+            return array('view_alert' => 'error', 'alert' => 'Špatný formát e-mailu');
          }
       }
    }
 
    public function handleForm($params) {
-      foreach ($params as $key => $value) {
-         $sanitize = $this->sanitize($key, $value);
+      foreach ($_SESSION[$params['token']] as $key => $value) {
+         $sanitize = $this->sanitize($key, $params[$key], $value);
          if (!empty($sanitize)) {
             return $sanitize;
          }
       }
-      foreach ($params as $key => $value) {
-         $validate = $this->validate($key, $value);
+      foreach ($_SESSION[$params['token']] as $key => $value) {
+         $validate = $this->validate($key, $params[$key], $value);
          if (!empty($validate)) {
             return $validate;
          }
       }
 
-      foreach ($params as $key => $value) {
-         if ((preg_match('#^'.self::TEXT.'#', $key)) === 1) {
-            $newkey = str_replace(self::TEXT, '', $key);
-            $data[$newkey] = $value;
-         } elseif ((preg_match('#^'.self::PASSWORD.'#', $key)) === 1) {
+      foreach ($_SESSION[$params['token']] as $key => $value) {
+         if ($value != '') {
+            $data[$key] = $params[$key];
+         /*} elseif ((preg_match('#^'.self::PASSWORD.'#', $key)) === 1) {
             $newkey = str_replace(self::PASSWORD, '', $key);
             $data[$newkey] = $value;
          } elseif ((preg_match('#^'.self::EMAIL.'#', $key)) === 1) {
@@ -57,9 +56,11 @@ class FormHandler {
             $data[$newkey] = $value;
          } elseif ((preg_match('#^'.self::SELECT.'#', $key)) === 1) {
             $newkey = str_replace(self::SELECT, '', $key);
-            $data[$newkey] = $value;
+            $data[$newkey] = $value;*/
          }
       }
+
+      var_dump($data);
       return $data;
       
    }

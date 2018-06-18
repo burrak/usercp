@@ -19,7 +19,7 @@ class HesloController extends Controller {
       $hesloForm->addPassword(array('name' => 'old', 'title' => 'Staré heslo', 'required' => 'required'));
       $hesloForm->addPassword(array('name' => 'new', 'title' => 'Nové heslo', 'required' => 'required'));
       $hesloForm->addPassword(array('name' => 'check', 'title' => 'Znovu nové heslo heslo', 'required' => 'required'));
-      $hesloForm->addSubmit('submit_password_change', 'Změnit heslo');
+      $hesloForm->addSubmit('Změnit heslo');
 
       $this->contentView = 'zmenaHesla';
       $this->data['form'] = $hesloForm->renderForm();

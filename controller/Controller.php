@@ -21,7 +21,7 @@ abstract class Controller {
          if ($_POST['token'] == $_SESSION['token']) {
             $Form = new FormHandler();
             $this->dataForm = $Form->handleForm($_POST);
-            //var_dump($this->dataForm);
+            var_dump($this->dataForm);
          }
       }
    }

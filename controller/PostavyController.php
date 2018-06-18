@@ -52,7 +52,7 @@ class PostavyController extends Controller {
                $smazaneList[$value['guid']] = $value['deleteInfos_Name'] . ' (' . $value['race'] . ' ' . $value['class'] . ' level ' . $value['level'] . ')';
             }
             $formSmazane->addSelect(array('title' => 'Postava', 'name' => 'postava', 'options' => $smazaneList));
-            $formSmazane->addSubmit('obnovit_postavu', 'Obnovit postavu');
+            $formSmazane->addSubmit('Obnovit postavu');
          } else {
             $smazaneList[0] = 'Žádné postavy k obnovení';
             $formSmazane->addSelect(array('title' => 'Postava', 'name' => 'postava', 'options' => $smazaneList));
