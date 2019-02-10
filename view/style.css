@@ -1,18 +1,19 @@
 .content
 {
-    max-width: 800px;
+    max-width: 1400px;
     margin: auto;
     border: 5px solid blue;
 }
 
 table.zpravy_vypis
 {
+    width: 100%;
     border: 5px solid black;
 }
 
 table.zpravy_vypis td
 {
-    width: 200px;
+    width: 100px;
 }
 
 table.zpravy_cist

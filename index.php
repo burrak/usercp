@@ -1,5 +1,6 @@
 <?php
 session_start();
+require("config.php");
 // Nastavení interního kódování pro funkce pro práci s řetězci
 //mb_internal_encoding("UTF-8");
 

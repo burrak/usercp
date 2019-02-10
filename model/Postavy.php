@@ -124,6 +124,10 @@ class Postavy {
       return Db::queryOne('SELECT * FROM characters.characters WHERE guid=? LIMIT 1', array($postava_id));
    }
 
+   private function getJednaPostavaByName($postava_name) {
+      return Db::queryOne('SELECT * FROM characters.characters WHERE name=? LIMIT 1', array($postava_name));
+   }
+
    private function getSmazanePostavy($race, $class) {
       $smazane = Db::query('SELECT * FROM characters.characters WHERE deleteInfos_Account=?', array($this->account_id));
       foreach ($smazane as $key => &$char) {
@@ -188,7 +192,7 @@ class Postavy {
    }
 
    public function returnSluzby() {
-      return Db::query('SELECT * FROM auth.ucp_prices');
+      return Db::query('SELECT * FROM auth.ucp_prices WHERE list=1');
    }
 
    private function priceCheck($service) {
@@ -382,6 +386,60 @@ class Postavy {
             return array($this->returnSmazanePostavy(1, 1), array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'postavaSmazane', 'view_alert' => 'error', 'alert' => 'Postavu ' . $postava['deleteInfos_Name'] . ' se nepodařilo obnovit. Zkus to znovu.'));
          }
       }
+   }
+
+   public function postavaTrade($postava_required, $postava_owned) {
+      $postava_required_db = $this->getJednaPostavaByName($postava_required);
+      if ($postava_required_db == '') {
+         return array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'trade', 'view_alert' => 'error', 'alert' => 'Požadovaná postava neexistuje');
+      }
+      if ($postava_required_db['account'] == $this->account_id) {
+         return array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'trade', 'view_alert' => 'error', 'alert' => 'Nemůžeš měnit postavy sám se sebou');
+      }
+      $postava_owned_db = $this->getJednaPostava($postava_owned);
+      if ($postava_owned_db == '') {
+         return array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => $original_page, 'view_alert' => 'error', 'alert' => 'Postava neexistuje');
+      }
+      if ($postava_owned_db['account'] != $this->account_id) {
+         return array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => $original_page, 'view_alert' => 'error', 'alert' => 'Postava není tvoje');
+      }
+      $query = Db::queryInsert('INSERT INTO characters.trade (char1, char2, acc1, acc2, status) VALUES (?, ?, ?, ?, 0)', array($postava_owned_db['guid'], $postava_required_db['guid'], $this->account_id, $postava_required_db['account']));
+      if ($query == TRUE) {
+         return array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'trade', 'view_alert' => 'success', 'alert' => 'Byla zaslána žádost o výměnu postavy.');
+      }
+      if ($query == FALSE) {
+         return array('view_header' => 'main', 'view_navigation' => 'menu', 'view_content' => 'trade', 'view_alert' => 'error', 'alert' => 'Něco se pokazilo. Zkus to znovu.');
+      }
+   }
+   
+   public function tradeByMe() {
+      $trade = Db::query('SELECT characters.trade.*, characters.char1.name AS "char1_name", characters.char1.race AS "char1_race", characters.char1.class AS "char1_class", characters.char1.level AS "char1_level", characters.char2.name AS "char2_name", characters.char2.race AS "char2_race", characters.char2.class AS "char2_class", characters.char2.level AS "char2_level" FROM characters.trade LEFT JOIN characters.characters char1 ON characters.trade.char1 = characters.char1.guid LEFT JOIN characters.characters char2 ON characters.trade.char2 = characters.char2.guid WHERE characters.trade.acc1=? AND characters.trade.status=0', array($this->account_id));
+      foreach ($trade as $key => &$char) {
+         $char['char1_race'] = $this->raceHandler($char['char1_race']);
+         $char['char1_class'] = $this->classHandler($char['char1_class']);
+         $char['char2_race'] = $this->raceHandler($char['char2_race']);
+         $char['char2_class'] = $this->classHandler($char['char2_class']);
+         
+      }
+      return $trade;
+   }
+   
+   public function tradeToMe() {
+      $trade = Db::query('SELECT characters.trade.*, characters.char1.name AS "char1_name", characters.char1.race AS "char1_race", characters.char1.class AS "char1_class", characters.char1.level AS "char1_level", characters.char2.name AS "char2_name", characters.char2.race AS "char2_race", characters.char2.class AS "char2_class", characters.char2.level AS "char2_level" FROM characters.trade LEFT JOIN characters.characters char1 ON characters.trade.char1 = characters.char1.guid LEFT JOIN characters.characters char2 ON characters.trade.char2 = characters.char2.guid WHERE characters.trade.acc2=? AND characters.trade.status=0', array($this->account_id));
+      foreach ($trade as $key => &$char) {
+         $char['char1_race'] = $this->raceHandler($char['char1_race']);
+         $char['char1_class'] = $this->classHandler($char['char1_class']);
+         $char['char2_race'] = $this->raceHandler($char['char2_race']);
+         $char['char2_class'] = $this->classHandler($char['char2_class']);
+         
+      }
+      return $trade;
+   }
+   
+   public function confirmTrade($trade_id) {
+      $query1 = Db::queryOne('SELECT * FROM characters.trade WHERE id=?', array($trade_id));
+      var_dump($query1);
+      $query2 = Db::queryTransaction(array('UPDATE characters.characters SET account=:account1 WHERE guid=:guid1', 'UPDATE characters.characters SET account=:account2 WHERE guid=:guid2', 'UPDATE characters.trade SET status=1 WHERE id=:id'), array(array(':account1' => $query1['acc1'], ':guid1' => $query1['char2']), array(':guid2' => $query1['char1'], ':account2' => $query1['acc2']), array(':id' => $trade_id)));
    }
 
 }

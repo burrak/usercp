@@ -19,7 +19,7 @@ class FormFactory {
    }
 
    public function addText($params) {
-      $input = '<tr>' . PHP_EOL . '<td>' . PHP_EOL . $params['title'] . PHP_EOL . '</td>' . PHP_EOL . '<td>' . PHP_EOL . '<input type="text" name="'.$params['name'].'" id="' . $params['name'] . '" value="' . $params['value'] . '" ' . $params['required'] . '>' . PHP_EOL . '</td>' . PHP_EOL;
+      $input = '<tr>' . PHP_EOL . '<td>' . PHP_EOL . $params['title'] . PHP_EOL . '</td>' . PHP_EOL . '<td>' . PHP_EOL . '<input type="text" name="'.$params['name'].'" id="' . $params['name'] . '" value="' . ($params['value'] == '' ? '' : $params['value']) . '" ' . $params['required'] . '>' . PHP_EOL . '</td>' . PHP_EOL;
       $this->form .= $input;
       $_SESSION[$this->token][$params['name']] = 'text';
    }
@@ -42,7 +42,7 @@ class FormFactory {
    }
 
    public function addSelect($params) {
-      $input = '<tr>' . PHP_EOL . '<td>' . PHP_EOL . $params['title'] . PHP_EOL . '</td>' . PHP_EOL . '<td>' . PHP_EOL . '<select name="select_' . $params['name'] . '" id="' . $params['name'] . '">' . PHP_EOL;
+      $input = '<tr>' . PHP_EOL . '<td>' . PHP_EOL . $params['title'] . PHP_EOL . '</td>' . PHP_EOL . '<td>' . PHP_EOL . '<select name="' . $params['name'] . '" id="' . $params['name'] . '">' . PHP_EOL;
       $this->form .= $input;
       foreach ($params['options'] as $key => $value) {
          $this->form .= '<option value="' . $key . '">' . $value . '</option>' . PHP_EOL;

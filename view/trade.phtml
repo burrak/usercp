@@ -1,0 +1,194 @@
+<?= $_formTrade ?>
+
+<table class="zpravy_vypis">
+
+    <tr>
+        <td colspan="4" style="font-size: 20px;">
+            <strong>Mnou navrhované výměny</strong>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            Moje postava
+        </td>
+        
+        <td colspan="4">
+            Požadovaná postava
+        </td>
+        
+    </tr>
+    <tr>
+        <td>
+            <b>Jméno</b>
+        </td>
+
+        <td>
+            <b>Rasa</b>
+        </td>
+
+        <td>
+            <b>Class</b>
+        </td>
+
+        <td>
+            <b>Level</b>
+        </td>
+
+        <td>
+            <b>Jméno</b>
+        </td>
+
+        <td>
+            <b>Rasa</b>
+        </td>
+
+        <td>
+            <b>Class</b>
+        </td>
+
+        <td>
+            <b>Level</b>
+        </td>
+        
+        <td>
+            <b>Akce</b>
+        </td>
+    </tr>
+    <?php foreach ($tradeByMe as $postava) : ?>
+       <tr>
+           <td>
+               <a href="/postavy/detail/<?= $postava['char1'] ?>"><?= $postava['char1_name'] ?></a>
+           </td>
+
+           <td>
+               <?= $postava['char1_race'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char1_class'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char1_level'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char2_name'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char2_race'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char2_class'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char2_level'] ?>
+           </td>
+           
+           <td>
+               <a href="/trade/cancel/<?= $postava['id'] ?>">Zrušit</a>
+           </td>
+
+       </tr>
+            <?php endforeach ?>
+</table>
+
+
+<table class="zpravy_vypis">
+
+    <tr>
+        <td colspan="4" style="font-size: 20px;">
+            <strong>Návrhy na výměnu</strong>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            Moje postava
+        </td>
+        
+        <td colspan="4">
+            Požadovaná postava
+        </td>
+        
+    </tr>
+    <tr>
+        <td>
+            <b>Jméno</b>
+        </td>
+
+        <td>
+            <b>Rasa</b>
+        </td>
+
+        <td>
+            <b>Class</b>
+        </td>
+
+        <td>
+            <b>Level</b>
+        </td>
+
+        <td>
+            <b>Jméno</b>
+        </td>
+
+        <td>
+            <b>Rasa</b>
+        </td>
+
+        <td>
+            <b>Class</b>
+        </td>
+
+        <td>
+            <b>Level</b>
+        </td>
+        
+        <td>
+            <b>Akce</b>
+        </td>
+    </tr>
+    <?php foreach ($tradeToMe as $postava) : ?>
+       <tr>
+           <td>
+               <a href="/postavy/detail/<?= $postava['char1'] ?>"><?= $postava['char1_name'] ?></a>
+           </td>
+
+           <td>
+               <?= $postava['char1_race'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char1_class'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char1_level'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char2_name'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char2_race'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char2_class'] ?>
+           </td>
+
+           <td>
+               <?= $postava['char2_level'] ?>
+           </td>
+           
+           <td>
+               <a href="/trade/confirm/<?= $postava['id'] ?>">Potvrdit</a> | <a href="/trade/cancel/<?= $postava['id'] ?>">Zrušit</a>
+           </td>
+
+       </tr>
+            <?php endforeach ?>
+</table>

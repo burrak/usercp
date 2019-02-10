@@ -2,11 +2,6 @@
 
 class Db {
 
-   const DB_HOST = "localhost";
-   const DB_USER = "wow";
-   const DB_PASSWORD = "bkc";
-   const DB_DB = "auth";
-
    private static $connection;
    private static $settings = array(
        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -15,7 +10,7 @@ class Db {
    );
 
    public static function connect() {
-      self::$connection = new PDO('mysql:host=' . self::DB_HOST . ';dbname=' . self::DB_DB, self::DB_USER, self::DB_PASSWORD, self::$settings);
+      self::$connection = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_DATABASE, DB_USER, DB_PASSWORD, self::$settings);
    }
 
    public static function query($query, $params = array()) {
